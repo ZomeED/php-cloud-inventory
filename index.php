@@ -1,15 +1,27 @@
 <?php
-// 1. Incluimos la conexión a la base de datos
+/**
+ * PROJECT: PHP Cloud Inventory Manager
+ * PURPOSE: Main Dashboard to display inventory items from MySQL database.
+ * ARCHITECTURE: Built with PHP (PDO) and Bootstrap 5 for professional responsiveness.
+ */
+
+// 1. Dependency Injection: Include the Database class to handle connections
 require_once 'includes/Database.php';
 
+// Instantiate the database object and establish a secure PDO connection
 $database = new Database();
 $db = $database->getConnection();
 
-// 2. Consultamos todos los artículos de la base de datos
-// Usamos ORDER BY created_at DESC para que los nuevos aparezcan arriba
+/**
+ * 2. DATA RETRIEVAL
+ * Fetching all products from the 'products' table.
+ * We use 'ORDER BY created_at DESC' so the recruiter sees new additions at the top.
+ */
 $query = "SELECT * FROM products ORDER BY created_at DESC";
 $stmt = $db->prepare($query);
 $stmt->execute();
+
+// Store results in an associative array for easy iteration in the HTML view
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -31,7 +43,14 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <?php if(isset($_GET['status']) && $_GET['status'] == 'added'): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Product added successfully to the cloud database!
+                <strong>Success!</strong> Product added to the cloud database.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <?php if(isset($_GET['status']) && $_GET['status'] == 'deleted'): ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Notice:</strong> Product removed from inventory.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
@@ -47,6 +66,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th class="text-center">Stock</th>
                             <th>Price</th>
                             <th>Created</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,11 +79,19 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td class="text-center"><?php echo $row['quantity']; ?></td>
                                 <td><?php echo number_format($row['price'], 2); ?>€</td>
                                 <td class="text-muted small"><?php echo date('d/m/Y', strtotime($row['created_at'])); ?></td>
+                                
+                                <td class="text-center">
+                                    <a href="delete-product.php?id=<?php echo $row['id']; ?>" 
+                                       class="btn btn-danger btn-sm" 
+                                       onclick="return confirm('Are you sure you want to delete this item?');">
+                                       Delete
+                                    </a>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">No products found in the inventory.</td>
+                                <td colspan="7" class="text-center py-4 text-muted">No products found in the inventory.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
