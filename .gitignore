@@ -1,0 +1,15 @@
+# Dependencias (si usas Composer en el futuro)
+vendor/
+
+# Configuración sensible (¡Muy importante para la seguridad!)
+.env
+config.php
+
+# Archivos del sistema y temporales
+.DS_Store
+Thumbs.db
+*.log
+
+# Archivos de editores (VS Code, etc.)
+.vscode/
+.idea/
