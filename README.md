@@ -1,6 +1,6 @@
 # 📦 PHP Cloud Inventory Manager
 
-A professional, lightweight inventory management system developed as part of my **Web Application Development** training. This project demonstrates a full **CRUD** (Create, Read, Delete) cycle using secure coding practices and is designed with **Cloud Scalability** in mind.
+A professional, lightweight inventory management system developed as part of my **Web Application Development** training. This project demonstrates a full **CRUD** (Create, Read, Update, Delete) cycle using secure coding practices and is designed with **Cloud Scalability** in mind.
 
 ## 🚀 Key Features
 - **Secure CRUD Logic:** Implemented using PHP Data Objects (PDO) to prevent SQL Injection.
