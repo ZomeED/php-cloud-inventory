@@ -68,5 +68,5 @@ As a student with foundational **AWS Cloud** knowledge, I designed this applicat
 4. **Deploy:** Move the folder to your `htdocs` or `/var/www/html/` directory and access it via `localhost`.
 
 ---
-**Developer:** Jose Antonio Zomeño Pardo - Web Developer Student  
+**Developer:** Jose Antonio Zomeño Pardo - Web Development Student  
 **Contact:** joseantoniozome01@gmail.com
