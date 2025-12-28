@@ -6,18 +6,14 @@
  * ARCHITECTURE: Built with PHP (PDO) and Bootstrap 5 for professional responsiveness.
  */
 
-// 1. Dependency Injection: Include the Database class to handle connections
+// Include the Database class to handle connections
 require_once 'includes/Database.php';
 
 // Instantiate the database object and establish a secure PDO connection
 $database = new Database();
 $db = $database->getConnection();
 
-/**
- * 2. DATA RETRIEVAL
- * Fetching all products from the 'products' table.
- * We use 'ORDER BY created_at DESC' so the recruiter sees new additions at the top.
- */
+// Fetching all products from the 'products' table. Latest entries appear first.
 $query = "SELECT * FROM products ORDER BY created_at DESC";
 $stmt = $db->prepare($query);
 $stmt->execute();
@@ -34,6 +30,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Inventory Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body class="bg-light">
@@ -41,36 +38,38 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="text-dark">Inventory Management</h2>
-            <a href="add-product.php" class="btn btn-primary shadow-sm">+ Add New Product</a>
+            <a href="add-product.php" class="btn btn-primary shadow-sm">
+                <i class="bi bi-plus-lg"></i> Add New Product
+            </a>
         </div>
 
-        <!-- When a product is added, show a success message -->
-        <?php if (isset($_GET['status']) && $_GET['status'] == 'added'): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success!</strong> Product added to the cloud database.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-
-        <!-- When a product is deleted, show an info message -->
-        <?php if (isset($_GET['status']) && $_GET['status'] == 'deleted'): ?>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Notice:</strong> Product removed from inventory.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-
-        <!-- When a product is updated, show an info message -->
-        <?php if (isset($_GET['status']) && $_GET['status'] == 'updated'): ?>
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                <strong>Success!</strong> Product details have been updated.
+        <!-- Alert Notifications -->
+        <?php if (isset($_GET['status'])): ?>
+            <?php
+            $alertClass = 'alert-info';
+            $message = '';
+            if ($_GET['status'] == 'added') {
+                $alertClass = 'alert-success';
+                $message = 'Product added to the cloud database.';
+            }
+            if ($_GET['status'] == 'deleted') {
+                $alertClass = 'alert-warning';
+                $message = 'Product removed from inventory.';
+            }
+            if ($_GET['status'] == 'updated') {
+                $alertClass = 'alert-info';
+                $message = 'Product details have been updated.';
+            }
+            ?>
+            <div class="alert <?php echo $alertClass; ?> alert-dismissible fade show shadow-sm" role="alert">
+                <strong>Notification:</strong> <?php echo $message; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
 
         <div class="card shadow-sm border-0">
             <div class="card-body p-0">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover align-middle mb-0">
                     <thead class="table-dark">
                         <tr>
                             <th>Ref</th>
@@ -83,29 +82,44 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Check if there are products in the database to display -->
+                        <!-- Loop through products if available and display them -->
                         <?php if (count($products) > 0): ?>
-                            <!-- Loop through each product and create a table row -->
                             <?php foreach ($products as $row): ?>
                                 <tr>
                                     <td><span class="badge bg-secondary"><?php echo htmlspecialchars($row['ref']); ?></span></td>
                                     <td class="fw-bold"><?php echo htmlspecialchars($row['name']); ?></td>
                                     <td class="text-muted small"><?php echo htmlspecialchars($row['description']); ?></td>
-                                    <td class="text-center"><?php echo $row['quantity']; ?></td>
-                                    <td><?php echo number_format($row['price'], 2); ?>€</td>
-                                    <td class="text-muted small"><?php echo date('d/m/Y', strtotime($row['created_at'])); ?></td>
-                                    <!-- Action buttons for editing and deleting products -->
-                                    <td class="text-center">
-                                        <a href="edit-product.php?id=<?php echo $row['id']; ?>"
-                                            class="btn btn-warning btn-sm shadow-sm m-1 me-1">
-                                            Edit
-                                        </a>
 
-                                        <a href="delete-product.php?id=<?php echo $row['id']; ?>"
-                                            class="btn btn-danger btn-sm shadow-sm"
-                                            onclick="return confirm('Are you sure you want to delete this item?');">
-                                            Delete
-                                        </a>
+                                    <td class="text-center">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <span class="fw-bold"><?php echo $row['quantity']; ?></span>
+                                            <!-- Low stock indicator -->
+                                            <?php if ($row['quantity'] < 10): ?>
+                                                <span class="badge bg-danger mt-1" style="font-size: 0.7rem;">LOW STOCK</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-success mt-1" style="font-size: 0.7rem;">IN STOCK</span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+
+                                    <td class="fw-bold"><?php echo number_format($row['price'], 2); ?>€</td>
+                                    <td class="text-muted small"><?php echo date('d/m/Y', strtotime($row['created_at'])); ?></td>
+
+                                    <!-- Product Actions -->
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="edit-product.php?id=<?php echo $row['id']; ?>"
+                                                class="btn btn-warning btn-sm shadow-sm d-flex align-items-center justify-content-center"
+                                                style="width: 80px;">
+                                                <i class="bi bi-pencil me-1"></i> Edit
+                                            </a>
+                                            <a href="delete-product.php?id=<?php echo $row['id']; ?>"
+                                                class="btn btn-danger btn-sm shadow-sm d-flex align-items-center justify-content-center"
+                                                style="width: 80px;"
+                                                onclick="return confirm('Are you sure you want to delete this item?');">
+                                                <i class="bi bi-trash me-1"></i> Delete
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
