@@ -16,7 +16,7 @@ A professional, lightweight inventory management system developed as part of my 
 ## 🎥 Video Demo
 Watch the CRUD functionality and real-time statistics in action:
 <div align="center">
-  <video src="screenshots/inventory_management.mp4" width="100%" controls></video>
+  <video src="screenshots/inventory_management.movie" width="100%" controls></video>
 </div>
 
 ## 🛠️ Tech Stack
