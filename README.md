@@ -11,10 +11,13 @@ A professional, lightweight inventory management system developed as part of my 
 ## 📸 Project Preview
 
 ### Main Dashboard
-![Inventory Dashboard](screenshots/dashboard.png)
+![Dashboard Preview](screenshots/dashboard-enhancement.png)
 
-### Add New Product Form
-![Add Product Form](screenshots/add-product.png)
+## 🎥 Video Demo
+Watch the CRUD functionality and real-time statistics in action:
+<div align="center">
+  <video src="screenshots/inventory_management.mp4" width="100%" controls></video>
+</div>
 
 ## 🛠️ Tech Stack
 - **Backend:** PHP 8.x (Object-Oriented Programming).
