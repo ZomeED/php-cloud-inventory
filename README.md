@@ -15,9 +15,8 @@ A professional, lightweight inventory management system developed as part of my 
 
 ## 🎥 Video Demo
 Watch the CRUD functionality and real-time statistics in action:
-<div align="center">
-  <video src="screenshots/inventory_management.mp4" width="100%" controls></video>
-</div>
+
+https://github.com/user-attachments/assets/775854fb-dc66-4ce8-ae61-bbc2cebd5ea1
 
 ## 🛠️ Tech Stack
 - **Backend:** PHP 8.x (Object-Oriented Programming).
