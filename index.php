@@ -20,6 +20,18 @@ $stmt->execute();
 
 // Store results in an associative array for easy iteration in the HTML view
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// --- STATS LOGIC ---
+// 1. Total Products
+$total_items = $db->query("SELECT COUNT(*) FROM products")->fetchColumn();
+
+// 2. Total Inventory Value
+$total_value = $db->query("SELECT SUM(quantity * price) FROM products")->fetchColumn();
+// Si la tabla está vacía, SUM devuelve null. Lo convertimos a 0.
+$total_value = $total_value ? $total_value : 0;
+
+// 3. Low Stock Count
+$low_stock_count = $db->query("SELECT COUNT(*) FROM products WHERE quantity < 10")->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -133,10 +145,67 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
+        <div class="row mt-3">
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm bg-primary text-white h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-uppercase small fw-bold">Total Products References</h6>
+                            <h2 class="mb-0"><?php echo $total_items; ?></h2>
+                        </div>
+                        <i class="bi bi-box-seam fs-1 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm bg-success text-white h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-uppercase small fw-bold">Inventory Value</h6>
+                            <h2 class="mb-0"><?php echo number_format($total_value, 2); ?>€</h2>
+                        </div>
+                        <i class="bi bi-currency-euro fs-1 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <div class="card border-0 shadow-sm <?php echo ($low_stock_count > 0) ? 'bg-danger' : 'bg-secondary'; ?> text-white h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h6 class="text-uppercase small fw-bold">Low Stock Alerts</h6>
+                            <h2 class="mb-0"><?php echo $low_stock_count; ?></h2>
+                        </div>
+                        <i class="bi bi-exclamation-triangle fs-1 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <footer class="mt-5 text-center text-muted small">
             <p>PHP Cloud Inventory Manager - Educational Project for Erasmus Internship</p>
         </footer>
     </div>
+
+    <!-- JavaScript to clean URL parameters after displaying alerts -->
+    <script>
+        // Wait for the page to load completely
+        window.addEventListener('load', function() {
+
+            // Check if the URL contains "?status=" to clean the address bar
+            if (window.location.search.includes('status=')) {
+
+                // Construct a new URL without the search parameters (query string)
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+
+                // Replace the current URL in the browser history without reloading the page
+                window.history.replaceState({
+                    path: cleanUrl
+                }, '', cleanUrl);
+            }
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
