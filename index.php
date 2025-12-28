@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PROJECT: PHP Cloud Inventory Manager
  * PURPOSE: Main Dashboard to display inventory items from MySQL database.
@@ -27,12 +28,14 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Inventory Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
     <div class="container mt-5">
@@ -41,16 +44,26 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="add-product.php" class="btn btn-primary shadow-sm">+ Add New Product</a>
         </div>
 
-        <?php if(isset($_GET['status']) && $_GET['status'] == 'added'): ?>
+        <!-- When a product is added, show a success message -->
+        <?php if (isset($_GET['status']) && $_GET['status'] == 'added'): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Success!</strong> Product added to the cloud database.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
 
-        <?php if(isset($_GET['status']) && $_GET['status'] == 'deleted'): ?>
+        <!-- When a product is deleted, show an info message -->
+        <?php if (isset($_GET['status']) && $_GET['status'] == 'deleted'): ?>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>Notice:</strong> Product removed from inventory.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <!-- When a product is updated, show an info message -->
+        <?php if (isset($_GET['status']) && $_GET['status'] == 'updated'): ?>
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> Product details have been updated.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
@@ -70,24 +83,31 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Check if there are products in the database to display -->
                         <?php if (count($products) > 0): ?>
-                            <?php foreach($products as $row): ?>
-                            <tr>
-                                <td><span class="badge bg-secondary"><?php echo htmlspecialchars($row['ref']); ?></span></td>
-                                <td class="fw-bold"><?php echo htmlspecialchars($row['name']); ?></td>
-                                <td class="text-muted small"><?php echo htmlspecialchars($row['description']); ?></td>
-                                <td class="text-center"><?php echo $row['quantity']; ?></td>
-                                <td><?php echo number_format($row['price'], 2); ?>€</td>
-                                <td class="text-muted small"><?php echo date('d/m/Y', strtotime($row['created_at'])); ?></td>
-                                
-                                <td class="text-center">
-                                    <a href="delete-product.php?id=<?php echo $row['id']; ?>" 
-                                       class="btn btn-danger btn-sm" 
-                                       onclick="return confirm('Are you sure you want to delete this item?');">
-                                       Delete
-                                    </a>
-                                </td>
-                            </tr>
+                            <!-- Loop through each product and create a table row -->
+                            <?php foreach ($products as $row): ?>
+                                <tr>
+                                    <td><span class="badge bg-secondary"><?php echo htmlspecialchars($row['ref']); ?></span></td>
+                                    <td class="fw-bold"><?php echo htmlspecialchars($row['name']); ?></td>
+                                    <td class="text-muted small"><?php echo htmlspecialchars($row['description']); ?></td>
+                                    <td class="text-center"><?php echo $row['quantity']; ?></td>
+                                    <td><?php echo number_format($row['price'], 2); ?>€</td>
+                                    <td class="text-muted small"><?php echo date('d/m/Y', strtotime($row['created_at'])); ?></td>
+                                    <!-- Action buttons for editing and deleting products -->
+                                    <td class="text-center">
+                                        <a href="edit-product.php?id=<?php echo $row['id']; ?>"
+                                            class="btn btn-warning btn-sm shadow-sm m-1 me-1">
+                                            Edit
+                                        </a>
+
+                                        <a href="delete-product.php?id=<?php echo $row['id']; ?>"
+                                            class="btn btn-danger btn-sm shadow-sm"
+                                            onclick="return confirm('Are you sure you want to delete this item?');">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
@@ -98,7 +118,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </table>
             </div>
         </div>
-        
+
         <footer class="mt-5 text-center text-muted small">
             <p>PHP Cloud Inventory Manager - Educational Project for Erasmus Internship</p>
         </footer>
@@ -106,4 +126,5 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
