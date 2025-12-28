@@ -8,11 +8,38 @@ A professional, lightweight inventory management system developed as part of my 
 - **Professional UI:** Responsive dashboard built with Bootstrap 5, featuring real-time user feedback (UX).
 - **Git Flow:** Developed using a systematic feature-branching strategy to ensure code stability.
 
+## 📸 Project Preview
+
+### Main Dashboard
+![Inventory Dashboard](screenshots/dashboard.png)
+
+### Add New Product Form
+![Add Product Form](screenshots/add-product.png)
+
 ## 🛠️ Tech Stack
 - **Backend:** PHP 8.x (Object-Oriented Programming).
 - **Database:** MySQL / MariaDB.
 - **Frontend:** HTML5, Bootstrap 5, JavaScript (Confirmations).
 - **Environment:** Linux (Mint) / Apache (LAMPP).
+
+---
+
+## 💻 Local Development & Environment Setup
+
+This project is developed and hosted locally using **LAMPP** on **Linux Mint**. To ensure the application runs correctly, follow these steps:
+
+1. **Start the XAMPP/LAMPP Manager:**
+   Run the following commands in your terminal to launch the service manager:
+   ```bash
+   cd /opt/lampp
+   sudo ./manager-linux-x64.run
+
+2. **Activate Services:** 
+   Inside the graphical manager, navigate to the "Manage Servers" tab and start:
+   - MySQL Database: Handles all relational data storage.
+   - Apache Web Server: Serves the PHP application files.
+
+3. **Database Management:** You can access and verify the table structure through phpMyAdmin at `http://localhost/phpmyadmin`.
 
 ---
 
@@ -41,5 +68,5 @@ As a student with foundational **AWS Cloud** knowledge, I designed this applicat
 4. **Deploy:** Move the folder to your `htdocs` or `/var/www/html/` directory and access it via `localhost`.
 
 ---
-**Developer:** Jose Antonio Zomeño Pardo  
-**Contact:** [joseantoniozome01@gmail.com]
+**Developer:** Jose Antonio Zomeño Pardo - Web Developer Student  
+**Contact:** joseantoniozome01@gmail.com
