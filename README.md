@@ -1,6 +1,11 @@
 # 📦 PHP Cloud Inventory Manager
 
-A professional, lightweight inventory management system developed as part of my **Web Application Development** training. This project demonstrates a full **CRUD** (Create, Read, Update, Delete) cycle using secure coding practices and is designed with **Cloud Scalability** in mind.
+[![Deployment Status](https://img.shields.io/badge/Deployment-Live-success?style=for-the-badge&logo=amazon-aws)](https://dawproyects.com/)
+[![PHP Version](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php)](https://www.php.net/)
+
+> **🔴 LIVE DEMO:** Access the deployed application at [https://dawproyects.com/](https://dawproyects.com/)
+
+A professional, lightweight inventory management system developed as part of my **Web Application Development** training. This project demonstrates a full **CRUD** (Create, Read, Update, Delete) cycle using secure coding practices and is now **deployed in a production AWS environment**.
 
 ## 🚀 Key Features
 - **Secure CRUD Logic:** Implemented using PHP Data Objects (PDO) to prevent SQL Injection.
@@ -22,7 +27,24 @@ https://github.com/user-attachments/assets/775854fb-dc66-4ce8-ae61-bbc2cebd5ea1
 - **Backend:** PHP 8.x (Object-Oriented Programming).
 - **Database:** MySQL / MariaDB.
 - **Frontend:** HTML5, Bootstrap 5, JavaScript (Confirmations).
-- **Environment:** Linux (Mint) / Apache (LAMPP).
+- **Infrastructure:** AWS EC2, Linux (Apache).
+
+---
+
+## ☁️ Cloud Infrastructure & Deployment
+This project has been migrated from a local environment to a live production server.
+
+### ⚙️ Implementation Details
+I successfully deployed this application using the following DevOps practices:
+
+1.  **AWS EC2 (Compute):** - Provisioned a Linux EC2 instance on Amazon Web Services.
+    - Manually configured the **LAMP Stack** (Linux, Apache, MySQL, PHP) for production.
+2.  **Remote Management:**
+    - Server administration and file deployment handled via **Bitvise SSH Client**.
+    - Utilized SFTP for secure file transfer and SSH terminal for server configuration.
+3.  **Domain & Networking:**
+    - Acquired and configured the domain **[dawproyects.com](https://dawproyects.com/)**.
+    - Configured DNS records to point to the AWS instance's public IP.
 
 ---
 
@@ -35,40 +57,61 @@ This project is developed and hosted locally using **LAMPP** on **Linux Mint**. 
    ```bash
    cd /opt/lampp
    sudo ./manager-linux-x64.run
+   ```
 
-2. **Activate Services:** 
-   Inside the graphical manager, navigate to the "Manage Servers" tab and start:
-   - MySQL Database: Handles all relational data storage.
-   - Apache Web Server: Serves the PHP application files.
+2. **Activate Services: Inside the graphical manager, navigate to the "Manage Servers" tab and start:**
 
-3. **Database Management:** You can access and verify the table structure through phpMyAdmin at `http://localhost/phpmyadmin`.
+    - MySQL Database: Handles all relational data storage.
 
----
+    - Apache Web Server: Serves the PHP application files.
 
-## ☁️ Technical Focus: Scaling to AWS
-As a student with foundational **AWS Cloud** knowledge, I designed this application to be easily migratable to a production-ready cloud environment. Here is how I would scale this architecture:
-
-### 1. Database Migration (High Availability)
-- **Local to Managed:** Transition from a local MySQL server to **Amazon RDS (Relational Database Service)**.
-- **Benefit:** This enables automated backups, multi-AZ deployment for disaster recovery, and easy scaling of storage and compute power.
-
-### 2. Computing & High Availability
-- **EC2 Instances:** Deploy the PHP application on **Amazon EC2** instances within a custom **VPC (Virtual Private Cloud)**.
-- **Auto Scaling:** Implement an **Auto Scaling Group** to automatically launch or terminate instances based on CPU traffic.
-- **Load Balancing:** Use an **Application Load Balancer (ALB)** to distribute incoming traffic across multiple instances, ensuring 24/7 availability.
-
-### 3. Security & Networking
-- **VPC Configuration:** Isolate the database in a private subnet while keeping the web server in a public subnet.
-- **Security Groups:** Restrict access to the database so only the EC2 instances can communicate with it, minimizing the attack surface.
+3. **Database Management: You can access and verify the table structure through phpMyAdmin at http://localhost/phpmyadmin.**
 
 ---
 
-## 🔧 Setup & Installation
-1. **Clone the repo:** `git clone https://github.com/ZomeED/php-cloud-inventory.git`.
-2. **Database Setup:** Import the `/sql/schema.sql` file into your MySQL manager (phpMyAdmin).
-3. **Configuration:** Set your database credentials in `config.php` (Note: This file is excluded via `.gitignore` for security).
-4. **Deploy:** Move the folder to your `htdocs` or `/var/www/html/` directory and access it via `localhost`.
+## 🔮 Future Scalability Strategy (Roadmap)
+While the current version runs on a single EC2 instance, the architecture is designed to scale using advanced AWS services:
+
+1. **Database Migration (High Availability)**
+   - **Concept:** Transition from local MySQL on EC2 to **Amazon RDS**.
+   - **Benefit:** Automated backups, multi-AZ deployment for disaster recovery, and easy scaling.
+
+2. **High Availability & Load Balancing**
+   - **Auto Scaling:** Implement an **Auto Scaling Group** to launch instances based on CPU traffic.
+   - **Load Balancing:** Use an **Application Load Balancer (ALB)** to distribute incoming traffic, ensuring 24/7 availability.
+
+3. **Security**
+   - **VPC Configuration:** Isolate the database in a private subnet while keeping the web server in a public subnet.
 
 ---
-**Developer:** Jose Antonio Zomeño Pardo - Web Development Student  
+
+## 🔧 Setup & Installation (Local)
+
+To set up the project locally for development or testing:
+
+1.  **Clone the repository:**
+    
+    > git clone [https://github.com/ZomeED/php-cloud-inventory.git](https://github.com/ZomeED/php-cloud-inventory.git)
+    
+
+2.  **Database Setup:**
+    Import the `/sql/schema.sql` file into your MySQL manager (e.g., phpMyAdmin).
+
+3.  **Configuration:**
+    Set your database credentials in `config.php`.
+    > **Note:** This file is excluded via `.gitignore` for security reasons. You must create it manually based on `config.sample.php` (if available) or your environment settings.
+
+4.  **Deploy:**
+    Move the project folder to your `htdocs` (XAMPP) or `/var/www/html/` (Linux Apache) directory and access it via your browser at `http://localhost/php-cloud-inventory`.
+
+---
+
+<div align="center">
+
+**Developer:** Jose Antonio Zomeño Pardo - Web Development Student
+<br>
 **Contact:** joseantoniozome01@gmail.com
+<br>
+[🔴 Live Project](https://dawproyects.com/) • [🐱 GitHub Profile & CV](https://github.com/ZomeED)
+
+</div>
